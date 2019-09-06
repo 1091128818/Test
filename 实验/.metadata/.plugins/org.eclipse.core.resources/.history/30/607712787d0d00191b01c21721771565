@@ -1,0 +1,499 @@
+package 操作系统实验;
+import java.awt.*;
+import java.awt.event.ActionEvent; 
+import java.awt.event.ActionListener; 
+import java.util.ArrayList; 
+import java.util.Iterator; 
+import java.util.Vector; 
+public class MyFrame extends JFrame 
+{ 
+int minx = 0; 
+int n; 
+String m; 
+String s; 
+ArrayList<Running> list1 = new ArrayList(); 
+ArrayList<Running> list2 = new ArrayList(); 
+Vector<String> v = new Vector(); 
+JPanel jp = new JPanel(); 
+JPanel jp1 = new JPanel(); 
+JPanel jp2 = new JPanel(); 
+JPanel jp3 = new JPanel(); 
+JPanel jp4 = new JPanel(); 
+JPanel jp5 = new JPanel(); 
+JTextArea area1 = new JTextArea(); 
+JTextArea area2 = new JTextArea(); 
+JList list = new JList(); 
+static JTextField jt1 = new JTextField(5); 
+static JTextField jt2 = new JTextField(5); 
+static JTextField jt3 = new JTextField(5); 
+JTextField jt4 = new JTextField(); 
+JTextField jt5 = new JTextField(); 
+JTextField jt6 = new JTextField(); 
+JLabel jl1 = new JLabel("进程名", 0); 
+JLabel jl2 = new JLabel("id", 0); 
+JLabel jl3 = new JLabel("优先数", 0); 
+JButton jb1 = new JButton("就绪"); 
+JButton jb2 = new JButton("优先数轮转法"); 
+JButton jb3 = new JButton("阻塞"); 
+JButton jb4 = new JButton("唤醒"); 
+JButton jb5 = new JButton("创建"); 
+JButton jb6 = new JButton("先来先服务"); 
+JButton jb7 = new JButton("撤销（就绪）"); 
+JButton jb8 = new JButton("撤销（阻塞）"); 
+
+JScrollPane js1 = new JScrollPane(this.list, 22, 30); 
+
+Toolkit kit = Toolkit.getDefaultToolkit(); 
+private final int x = 0; 
+private final int y = 0; 
+private final int width = this.kit.getScreenSize().width / 3 * 2; 
+private final int height = this.kit.getScreenSize().height / 5 * 4; 
+
+public MyFrame() 
+{ 
+  super("进程管理系统"); 
+  setBounds(0, 0, this.width, this.height); 
+  add(this.jp1, "Center"); 
+  this.jp1.setLayout(new GridLayout(2, 2, 20, 0)); 
+  this.jp1.add(this.jp2); 
+  this.jp1.add(this.jp3); 
+  this.jp1.add(this.jp4); 
+  this.jp1.add(this.jp); 
+  this.jp2.setLayout(new BorderLayout()); 
+  this.jp2.add(this.jt4, "North"); 
+  this.jt4.setText("进程名\tid\t优先数"); 
+  this.jt4.setEditable(false); 
+  this.jp2.add(this.area1); 
+  this.area1.setEditable(false); 
+  this.jp3.setLayout(new BorderLayout()); 
+  this.jp3.add(this.jt5, "North"); 
+  this.jt5.setText("进程名\tid\t优先数"); 
+  this.jt5.setEditable(false); 
+  this.jp3.add(this.list); 
+
+  this.jp4.setLayout(new BorderLayout()); 
+  this.jp4.add(this.jt6, "North"); 
+  this.jt6.setText("进程名\tid\t优先数"); 
+  this.jt6.setEditable(false); 
+  this.jp4.add(this.area2); 
+  this.jp.add(this.jb2); 
+  this.jp.add(this.jb6); 
+  this.jp.add(this.jb3); 
+  this.jp.add(this.jb4); 
+  this.jp.add(this.jb8); 
+  this.jp.setLayout(new FlowLayout()); 
+  this.jb8.addActionListener(new ActionListener() { 
+    public void actionPerformed(ActionEvent e) { 
+      String a = (String)MyFrame.this.list.getSelectedValue(); 
+
+      MyFrame.this.v.remove(a); 
+      MyFrame.this.list.setListData(MyFrame.this.v); 
+    } 
+  }); 
+  this.jb2.addActionListener(new ActionListener() 
+  { 
+    public void actionPerformed(ActionEvent e) 
+    { 
+      Iterator it2 = MyFrame.this.list2.iterator(); 
+      if (!it2.hasNext()) 
+      { 
+        int min = 1000; 
+        Running r = new Running(1, 1, "a", "b"); 
+        Iterator it = MyFrame.this.list1.iterator(); 
+        while (it.hasNext()) { 
+          Running re = (Running)it.next(); 
+          if (re.number <= min) 
+          { 
+            min = re.number; 
+            r = re; 
+          } 
+        } 
+        MyFrame.this.list2.add(r); 
+        MyFrame.this.area2.append(r.getRecord()); 
+        MyFrame.this.list1.remove(r); 
+        MyFrame.this.area1.setText(null); 
+        Iterator it1 = MyFrame.this.list1.iterator(); 
+        while (it1.hasNext()) { 
+          Running re = (Running)it1.next(); 
+          MyFrame.this.area1.append(re.getRecord()); 
+          MyFrame.this.area1.append("\n"); 
+        } 
+      } 
+    } 
+  }); 
+  this.jb6.addActionListener(new ActionListener() { 
+    public void actionPerformed(ActionEvent e) { 
+      Iterator it2 = MyFrame.this.list2.iterator(); 
+      if (!it2.hasNext()) 
+      { 
+        int min = 1000; 
+        Running r = new Running(1, 1, "a", "b"); 
+        Iterator it = MyFrame.this.list1.iterator(); 
+        while (it.hasNext()) { 
+          Running re = (Running)it.next(); 
+          if (re.i <= min) 
+          { 
+            min = re.i; 
+            r = re; 
+          } 
+        } 
+        MyFrame.this.list2.add(r); 
+        MyFrame.this.area2.append(r.getRecord()); 
+        MyFrame.this.list1.remove(r); 
+        MyFrame.this.area1.setText(null); 
+        Iterator it1 = MyFrame.this.list1.iterator(); 
+        while (it1.hasNext()) { 
+          Running re = (Running)it1.next(); 
+          MyFrame.this.area1.append(re.getRecord()); 
+          MyFrame.this.area1.append("\n"); 
+        } 
+      } 
+    } 
+  }); 
+  this.jb3.addActionListener(new ActionListener() { 
+    public void actionPerformed(ActionEvent e) { 
+      Iterator it3 = MyFrame.this.list2.iterator(); 
+      Iterator aa = MyFrame.this.list1.iterator(); 
+      while ((it3.hasNext() & aa.hasNext())) 
+      { 
+        Running runn = (Running)it3.next(); 
+        MyFrame.this.v.addElement(runn.getRecord()); 
+        MyFrame.this.list.setListData(MyFrame.this.v); 
+        MyFrame.this.list.setVisibleRowCount(10); 
+        MyFrame.this.list2.remove(runn); 
+        MyFrame.this.area2.setText(null); 
+        Iterator it2 = MyFrame.this.list2.iterator(); 
+        if (!it2.hasNext()) 
+        { 
+          int min = 1000; 
+          Running r = new Running(1, 1, "a", "b"); 
+          Iterator it = MyFrame.this.list1.iterator(); 
+          while (it.hasNext()) { 
+            Running re = (Running)it.next(); 
+            if (re.number <= min) 
+            { 
+              min = re.number; 
+              r = re; 
+            } 
+          } 
+          MyFrame.this.list2.add(r); 
+          MyFrame.this.area2.append(r.getRecord()); 
+          MyFrame.this.list1.remove(r); 
+          MyFrame.this.area1.setText(null); 
+          Iterator it1 = MyFrame.this.list1.iterator(); 
+          while (it1.hasNext()) { 
+            Running re = (Running)it1.next(); 
+            MyFrame.this.area1.append(re.getRecord()); 
+            MyFrame.this.area1.append("\n"); 
+          } 
+        } 
+      } 
+    } 
+  }); 
+  this.jb4.addActionListener(new ActionListener() { 
+    public void actionPerformed(ActionEvent e) { 
+      String a = (String)MyFrame.this.list.getSelectedValue(); 
+
+      MyFrame.this.v.remove(a); 
+      MyFrame.this.list.setListData(MyFrame.this.v); 
+      Running rr = new Running(MyFrame.this.minx++, 
+Xchange.getFirstString(a), 
+
+      MyFrame.this.list1.add(rr); 
+      MyFrame.this.area1.setText(null); 
+      Iterator it = MyFrame.this.list1.iterator(); 
+      while (it.hasNext()) { 
+        Running re = (Running)it.next(); 
+        MyFrame.this.area1.append(re.getRecord()); 
+        MyFrame.this.area1.append("\n"); 
+      } 
+    } 
+  }); 
+  add(this.jp5, "North"); 
+  this.jp5.add(this.jb5); 
+  this.jp5.add(this.jl1); 
+  this.jp5.add(jt1); 
+  this.jp5.add(this.jl2); 
+  this.jp5.add(jt2); 
+  this.jp5.add(this.jl3); 
+  this.jp5.add(jt3); 
+  this.jb5.addActionListener(new ActionListener() 
+  { 
+    public void actionPerformed(ActionEvent e) 
+    { 
+      MyFrame.this.n = 
+
+      MyFrame.this.m = MyFrame.jt1.getText(); 
+      MyFrame.this.s = MyFrame.jt2.getText(); 
+      Running run = new Running(MyFrame.this.minx++, 
+
+
+      MyFrame.this.list1.add(run); 
+
+      MyFrame.this.area1.setText(null); 
+      MyFrame.jt1.setText(null); 
+      MyFrame.jt2.setText(null); 
+      MyFrame.jt3.setText(null); 
+
+      Iterator it = MyFrame.this.list1.iterator(); 
+      while (it.hasNext()) { 
+        Running re = (Running)it.next(); 
+        MyFrame.this.area1.append(re.getRecord()); 
+        MyFrame.this.area1.append("\n"); 
+      } 
+    } 
+  }); 
+  setDefaultCloseOperation(3); 
+  setVisible(true); 
+} 
+
+
+
+
+
+int number; 
+int i; 
+String name; 
+String id; 
+
+public Running(int i, int n, String m, String s) 
+{ 
+  this.i = i; 
+  this.number = n; 
+  this.name = m; 
+  this.id = s; 
+} 
+
+public String getRecord() 
+{ 
+  String s = this.name + "                            " + 
+                          " + this.number; 
+  return s; 
+} 
+
+
+
+
+
+public static String getFirstString(String d) 
+{ 
+  char[] a = new char[50]; 
+  char[] b = new char[50]; 
+  char[] c = new char[50]; 
+  char[] e = new char[50]; 
+  int t = 0; 
+  int acount = 0; 
+  int bcount = 0; 
+  int ccount = 0; 
+  int ecount = 0; 
+  int is = 0; 
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) != ' ') { 
+      a[(acount++)] = d.charAt(i); 
+    } else { 
+      t = i; 
+      break; 
+    } 
+  } 
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) == ' ') 
+      continue; 
+    t = i; 
+    break; 
+  } 
+
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) != ' ') { 
+      b[(bcount++)] = d.charAt(i); 
+    } else { 
+      t = i; 
+      break; 
+    } 
+  } 
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) == ' ') 
+      continue; 
+    t = i; 
+    break; 
+  } 
+
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) != ' ') { 
+      c[(ccount++)] = d.charAt(i); 
+    } else { 
+      t = i; 
+      break; 
+    } 
+  } 
+
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) == ' ') 
+      continue; 
+    t = i; 
+    break; 
+  } 
+
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) != ' ') { 
+      e[(ecount++)] = d.charAt(i); 
+    } 
+  } 
+  for (int i = 0; a[i] != 0; i++) { 
+    is = i + 1; 
+  } 
+
+  char[] ax = new char[is]; 
+  for (int i = 0; i < is; i++) { 
+    ax[i] = a[i]; 
+  } 
+  String as = new String(ax); 
+  return as; 
+} 
+public static String getSecondString(String d) { 
+  char[] a = new char[50]; 
+  char[] b = new char[50]; 
+  char[] c = new char[50]; 
+  char[] e = new char[50]; 
+  int t = 0; 
+  int acount = 0; 
+  int bcount = 0; 
+  int ccount = 0; 
+  int ecount = 0; 
+  int is = 0; 
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) != ' ') { 
+      a[(acount++)] = d.charAt(i); 
+    } else { 
+      t = i; 
+      break; 
+    } 
+  } 
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) == ' ') 
+      continue; 
+    t = i; 
+    break; 
+  } 
+
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) != ' ') { 
+      b[(bcount++)] = d.charAt(i); 
+    } else { 
+      t = i; 
+      break; 
+    } 
+  } 
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) == ' ') 
+      continue; 
+    t = i; 
+    break; 
+  } 
+
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) != ' ') { 
+      c[(ccount++)] = d.charAt(i); 
+    } else { 
+      t = i; 
+      break; 
+    } 
+  } 
+
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) == ' ') 
+      continue; 
+    t = i; 
+    break; 
+  } 
+
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) != ' ') { 
+      e[(ecount++)] = d.charAt(i); 
+    } 
+  } 
+  for (int i = 0; b[i] != 0; i++) { 
+    is = i + 1; 
+  } 
+
+  char[] bx = new char[is]; 
+  for (int i = 0; i < is; i++) { 
+    bx[i] = b[i]; 
+  } 
+  String bs = new String(bx); 
+  return bs; 
+} 
+
+public static int getThirdString(String d) { 
+  char[] a = new char[50]; 
+  char[] b = new char[50]; 
+  char[] c = new char[50]; 
+  char[] e = new char[50]; 
+  int t = 0; 
+  int acount = 0; 
+  int bcount = 0; 
+  int ccount = 0; 
+  int ecount = 0; 
+  int is = 0; 
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) != ' ') { 
+      a[(acount++)] = d.charAt(i); 
+    } else { 
+      t = i; 
+      break; 
+    } 
+  } 
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) == ' ') 
+      continue; 
+    t = i; 
+    break; 
+  } 
+
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) != ' ') { 
+      b[(bcount++)] = d.charAt(i); 
+    } else { 
+      t = i; 
+      break; 
+    } 
+  } 
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) == ' ') 
+      continue; 
+    t = i; 
+    break; 
+  } 
+
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) != ' ') { 
+      c[(ccount++)] = d.charAt(i); 
+    } else { 
+      t = i; 
+      break; 
+    } 
+  } 
+
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) == ' ') 
+      continue; 
+    t = i; 
+    break; 
+  } 
+
+  for (int i = t; i < d.length(); i++) { 
+    if (d.charAt(i) != ' ') { 
+      e[(ecount++)] = d.charAt(i); 
+    } 
+  } 
+  for (int i = 0; c[i] != 0; i++) { 
+    is = i + 1; 
+  } 
+
+  char[] cx = new char[is]; 
+  for (int i = 0; i < is; i++) { 
+    cx[i] = c[i]; 
+  } 
+  String cs = new String(cx); 
+  int num = Integer.parseInt(cs); 
+  return num; 
+} 

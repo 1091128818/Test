@@ -1,0 +1,42 @@
+package 实验一;
+
+import java.awt.*;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+
+/*
+ * 在窗口中有四个标签，（1、2、3、4）使用多线程机制分别依次显示 
+ * */
+public class Main2  {
+
+	JFrame Fream1;
+	JLabel label1;
+	JLabel label2;
+	JLabel label3;
+	JLabel label4;
+	public static void main(String[] args) {
+		new Main2().JLabelMain();;
+	}
+	
+	
+	public void JLabelMain() {
+		Fream1 = new JFrame("窗口");
+		label1 = new JLabel("<html><a href=> 标签1</a></html>");
+		label2 = new JLabel("<html><a href=> 标签2</a></html>");
+		label3 = new JLabel("<html><a href=> 标签3</a></html>");
+		label4 = new JLabel("<html><a href=> 标签4</a></html>");
+		Fream1.getContentPane().add(label1);
+		Fream1.getContentPane().add(label2);
+		Fream1.getContentPane().add(label3);
+		Fream1.getContentPane().add(label4);
+		//Fream1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Fream1.pack();
+		Fream1.setLocation(500,400);
+		Fream1.setVisible(true);
+	}
+	
+	
+	
+}

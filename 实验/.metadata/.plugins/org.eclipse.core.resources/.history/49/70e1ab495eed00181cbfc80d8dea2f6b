@@ -1,0 +1,133 @@
+package 实验三;
+
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+
+//网格布局
+class Myframe extends JFrame {
+	private JPanel pan1 = new JPanel();
+	private JPanel pan2 = new JPanel();
+	private JPanel pan3 = new JPanel();
+	private JPanel pan4 = new JPanel();
+	private JPanel pan5 = new JPanel();
+	private JPanel pan6 = new JPanel();
+	private JPanel pan7 = new JPanel();
+	private JPanel pan8 = new JPanel();
+	private JPanel pan9 = new JPanel();
+	private JPanel pan10 = new JPanel(); // 所有的pan
+	//private JLabel num = new JLabel("学 号");
+	private JLabel name = new JLabel("姓 名");
+	private JLabel sex = new JLabel("性 别");
+	private JLabel birth = new JLabel("出生日期");
+	private JLabel ty = new JLabel("团 员");
+	private JLabel zy = new JLabel("专 业");
+	private JLabel home = new JLabel("家庭地址");
+	private JLabel jl = new JLabel("个人简述"); // 所有的label
+	//private JTextField one = new JTextField(10);
+	private JTextField two = new JTextField(5);
+	private JTextField three = new JTextField(10);
+	private JTextField four = new JTextField(30); // 所有的text
+	private JTextArea area = new JTextArea(4, 50);
+
+	private JTextField result1 = new JTextField(20);
+	private JRadioButton radio1 = new JRadioButton("男",true);
+	private JRadioButton radio2 = new JRadioButton("女");
+	private ButtonGroup radio3 = new ButtonGroup(); // 单选
+
+	private JTextField result2 = new JTextField(20);
+	private JRadioButton radio4 = new JRadioButton("是",true);
+	private JRadioButton radio5 = new JRadioButton("否");
+	//private ButtonGroup radio6 = new ButtonGroup();
+
+	private JTextField result3 = new JTextField(20);
+	private String[] str = { "计算机", "物联网", "网络工程"};
+	private JComboBox com = new JComboBox(str);
+
+	public Myframe() {
+		this.setTitle("个人简历");
+		this.setBounds(100, 200, 700, 650);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		GridLayout gridlay = new GridLayout(9, 1);
+		pan10.setLayout(new FlowLayout(FlowLayout.LEFT));
+		thing();
+		this.setVisible(true);
+		
+	}
+
+	public void thing() {
+
+		//pan1.add(num, BorderLayout.WEST);
+		//pan1.add(one);
+
+		pan2.add(name);
+		pan2.add(two);
+
+		pan3.add(sex);
+		pan3.add(radio1);
+		pan3.add(radio2);
+		radio3.add(radio1);
+		radio3.add(radio2);
+		result1.setEditable(false);
+
+		pan4.add(birth);
+		pan4.add(three);
+
+		pan5.add(ty);
+		pan5.add(radio4);
+		pan5.add(radio5);
+		//radio6.add(radio4);
+		//radio6.add(radio5);
+		result2.setEditable(false);
+
+		pan6.add(zy);
+		pan6.add(com);
+		pan6.add(result3);
+		com.addItemListener(new ItemHandler());
+
+		pan7.add(home);
+		pan7.add(four);
+		this.add(pan7);
+		pan8.add(jl);
+		pan8.add(area);
+
+		this.add(pan10);
+		pan10.add(pan1, BorderLayout.WEST);
+		pan10.add(pan2);
+		pan10.add(pan3);
+		pan10.add(pan4);
+		pan10.add(pan5);
+		pan10.add(pan6);
+		pan10.add(pan7);
+		pan10.add(pan8);
+		pan10.add(pan9);
+
+	}
+
+	// 单选动作事件处理
+
+	class ItemHandler implements ItemListener {
+		public void itemStateChanged(ItemEvent e) {
+			StringBuffer str3 = new StringBuffer("你选择的专业是:");
+			if (com.getSelectedIndex() == 0) {
+				str3.append("计算机");
+			}
+			if (com.getSelectedIndex() == 1) {
+				str3.append("物联网");
+			}
+			if (com.getSelectedIndex() == 2) {
+				str3.append("网络工程");
+			}
+			result3.setText(str3.toString());
+		}
+	}
+
+}
+
+public class Main1 {
+	public static void main(String[] args) {
+
+		new Myframe();
+	}
+}

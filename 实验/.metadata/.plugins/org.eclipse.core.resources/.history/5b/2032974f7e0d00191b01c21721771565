@@ -1,0 +1,9 @@
+package 操作系统实验;
+
+public class Begin 
+{ 
+public static void main(String[] args) 
+{ 
+new MyFrame(); 
+} 
+} 

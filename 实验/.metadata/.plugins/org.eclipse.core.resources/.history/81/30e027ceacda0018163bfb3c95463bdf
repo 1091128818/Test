@@ -1,0 +1,81 @@
+package 实验一;
+
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Label;
+import java.awt.Panel;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.net.ssl.SSLException;
+
+class Creatlabel implements Runnable{
+	private Frame frame;
+//	private static final Object lock  = new Object();
+	Panel panel;
+	private Label l;
+	public Creatlabel(Frame f,Panel p,Label l) {
+		this.frame = f;
+		this.panel = p;
+		this.l = l;
+	}
+	@Override
+	public void run() {
+		frame.setLocation(500, 200);
+		frame.setSize(500, 600);
+		frame.setVisible(true);
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {   
+			public void windowClosing(java.awt.event.WindowEvent e) {   
+			System.exit(0);   
+			}   
+		}); 
+		panel.add(l);
+		frame.add(panel);
+		try {
+			Thread.sleep(500);
+			System.out.println(l);
+		} catch (InterruptedException e) {}
+	}
+}
+
+public class test02{
+	public static void main(String[] args) throws InterruptedException {
+		Frame f = new Frame();
+		Panel p = new Panel();
+		Label s1 = new Label();
+		Label s2 = new Label();
+		Label s3 = new Label();
+		Label s4 = new Label();
+		Label s5 = new Label();
+		s1.setText("标签1");
+		s1.setFont(new Font(null, Font.PLAIN, 25));
+		s2.setText("标签2");
+		s3.setText("标签3");
+		s3.setFont(new Font(null, Font.PLAIN, 25));
+		s4.setText("标签4");
+		s5.setText("标签5");
+		Runnable runner1 = new Creatlabel(f,p,s1);
+		Runnable runner2 = new Creatlabel(f,p,s2);
+		Runnable runner3 = new Creatlabel(f,p,s3);
+		Runnable runner4 = new Creatlabel(f,p,s4);
+		Runnable runner5 = new Creatlabel(f,p,s5);
+		Thread thread1 = new Thread(runner1);
+		Thread thread2 = new Thread(runner2);
+		Thread thread3 = new Thread(runner3);
+		Thread thread4 = new Thread(runner4);
+		Thread thread5 = new Thread(runner5);
+		
+		thread1.start();
+		thread1.join();
+		thread2.start();
+		thread2.join();
+		thread3.start();
+		thread3.join();
+		thread4.start();
+		thread4.join();
+		thread5.start();
+		
+	}
+}

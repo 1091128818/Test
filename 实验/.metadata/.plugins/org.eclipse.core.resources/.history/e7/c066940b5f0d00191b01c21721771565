@@ -1,0 +1,8 @@
+package 操作系统实验.file;
+
+public class Snippet {
+	public static void main(String[] args) {
+		option = stdin.nextInt(); 
+	}
+}
+
